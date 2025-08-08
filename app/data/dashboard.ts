@@ -1,0 +1,36 @@
+export const dashboardData = {
+  metrics: {
+    totalOrders: 1247,
+    totalRevenue: 45678.90,
+    totalUsers: 892,
+    totalProducts: 156,
+  },
+  revenueData: [
+    { month: 'Jan', revenue: 12000 },
+    { month: 'Feb', revenue: 19000 },
+    { month: 'Mar', revenue: 15000 },
+    { month: 'Apr', revenue: 22000 },
+    { month: 'May', revenue: 28000 },
+    { month: 'Jun', revenue: 35000 },
+    { month: 'Jul', revenue: 32000 },
+    { month: 'Aug', revenue: 38000 },
+    { month: 'Sep', revenue: 42000 },
+    { month: 'Oct', revenue: 39000 },
+    { month: 'Nov', revenue: 45000 },
+    { month: 'Dec', revenue: 52000 },
+  ],
+  orderStatusData: [
+    { status: 'Pending', count: 45, color: '#fbbf24' },
+    { status: 'Processing', count: 23, color: '#3b82f6' },
+    { status: 'Shipped', count: 67, color: '#10b981' },
+    { status: 'Delivered', count: 89, color: '#059669' },
+    { status: 'Cancelled', count: 12, color: '#ef4444' },
+  ],
+  recentOrders: [
+    { id: '#1234', customer: 'John Doe', amount: 299.99, status: 'Delivered', date: '2024-01-15' },
+    { id: '#1235', customer: 'Jane Smith', amount: 149.50, status: 'Shipped', date: '2024-01-14' },
+    { id: '#1236', customer: 'Bob Johnson', amount: 89.99, status: 'Processing', date: '2024-01-13' },
+    { id: '#1237', customer: 'Alice Brown', amount: 199.99, status: 'Pending', date: '2024-01-12' },
+    { id: '#1238', customer: 'Charlie Wilson', amount: 399.99, status: 'Delivered', date: '2024-01-11' },
+  ],
+}; 
