@@ -5,6 +5,8 @@ export default [
   route("dashboard", "routes/dashboard.tsx"),
   route("users", "routes/users.tsx"),
   route("products", "routes/products.tsx"),
+  route("products/add", "routes/PageAddProduct.tsx"),
+  route("products/edit/:id", "routes/PageUpdateProduct.tsx"),
   route("orders", "routes/orders.tsx"),
   route("settings", "routes/settings.tsx"),
 ] satisfies RouteConfig;

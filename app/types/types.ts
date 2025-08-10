@@ -24,7 +24,7 @@ export interface IUser {
 
 export interface AddDoc {
   name: string;
-  details?: string;
+  details: string;
   imageUrl: string;
   specifications: { value: string }[];
   category: string;

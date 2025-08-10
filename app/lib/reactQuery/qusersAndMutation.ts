@@ -1,15 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   addToDoc,
-  clearCart,
   deleteFromDoc,
   getAllProducts,
   getOrdersCustomer,
-  getProductByID,
+  updateProduct,
   Login,
   LogOut,
   searchForProducts,
-  updateProductCartQty,
 } from "../firebase/api";
 import type { AddDoc, AuthForm } from "~/types/types";
 
@@ -42,14 +40,6 @@ export function useGetAllProducts(
   });
 }
 
-export function useGetProduct(id: string) {
-  return useQuery({
-    queryKey: ["GetProduct", id],
-    queryFn: () => getProductByID(id),
-    enabled: !!id,
-  });
-}
-
 export function useAddToDoc() {
   const queryClient = useQueryClient();
   return useMutation({
@@ -61,6 +51,21 @@ export function useAddToDoc() {
       queryClient.invalidateQueries({
         queryKey: ["GetCart"],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["allProducts"],
+      });
+    },
+  });
+}
+
+export function useUpdateProduct() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (payload: { id: string; product: AddDoc }) =>
+      updateProduct(payload.id, payload.product),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["allProducts"] });
+      queryClient.invalidateQueries({ queryKey: ["GetProduct"] });
     },
   });
 }
@@ -79,19 +84,6 @@ export function useDeleteFromDoc() {
       });
       queryClient.invalidateQueries({
         queryKey: ["GetAddress"],
-      });
-    },
-  });
-}
-
-export function useUpdateProductCartQty() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (product: { id: string; qty: number }) =>
-      updateProductCartQty(product.id, product.qty),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["GetCart"],
       });
     },
   });
@@ -116,18 +108,3 @@ export function useGetOrdersCustomer(customerId: string) {
 }
 
 // Stripe functions //
-
-export function useClearCart() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (prodcutId: string[]) => clearCart(prodcutId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["OrdersCustomer"],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["GetCart"],
-      });
-    },
-  });
-}

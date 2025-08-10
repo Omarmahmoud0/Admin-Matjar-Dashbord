@@ -1,5 +1,4 @@
 import { type ColumnDef } from "@tanstack/react-table";
-import { type Product } from "../data/products";
 import { Button } from "./ui/button";
 import {
   DropdownMenu,
@@ -10,6 +9,7 @@ import {
 } from "./ui/dropdown-menu";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import { Checkbox } from "./ui/checkbox";
+import { Link } from "react-router";
 
 export const productsColumns: ColumnDef<any>[] = [
   {
@@ -93,18 +93,18 @@ export const productsColumns: ColumnDef<any>[] = [
     accessorKey: "stock",
     header: "Stock",
     cell: ({ row }) => {
-      const product = 15 as number;
+      const product = row.original;
       return (
         <span
           className={`text-sm font-medium  ${
             product === 0
               ? "text-red-600 dark:text-red-400"
-              : product < 15
+              : product.stock < 15
               ? "text-yellow-600 dark:text-yellow-400"
               : "text-green-600 dark:text-green-400"
           }`}
         >
-          {product}
+          {product.stock ? product.stock : 15}
         </span>
       );
     },
@@ -113,7 +113,10 @@ export const productsColumns: ColumnDef<any>[] = [
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => {
-      const status = "in_stock";
+      const product = row.original;
+      const InStock =
+        product.status === undefined || product.status === "In Stock";
+      const OutOfStock = product.status === "Out of Stock";
       const colors = {
         in_stock:
           "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
@@ -123,10 +126,13 @@ export const productsColumns: ColumnDef<any>[] = [
       return (
         <span
           className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-            colors[status as keyof typeof colors]
+            InStock
+              ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+              : OutOfStock &&
+                "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
           }`}
         >
-          {status.replace("_", " ")}
+          {InStock ? "In Stock" : OutOfStock && "Out of Stock"}
         </span>
       );
     },
@@ -146,10 +152,10 @@ export const productsColumns: ColumnDef<any>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => alert(`Edit product: ${product.name}`)}
-            >
-              Edit
+            <DropdownMenuItem>
+              <Link to={`/products/edit/${product.id}`} className="w-full">
+                Edit
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => alert(`Delete product: ${product.name}`)}

@@ -95,18 +95,27 @@ export async function addToDoc(product: AddDoc) {
   }
 }
 
-export async function updateProductCartQty(id: string, qty: number) {
-  if (!id) return;
+export async function updateProduct(id: string, product: AddDoc) {
   try {
-    await updateDoc(doc(db, "cart", id), {
-      qty: qty,
+    const ref = doc(db, "products", id);
+    await updateDoc(ref, {
+      name: product.name,
+      deitals: product.details,
+      imageUrl: product.imageUrl,
+      specifications: product.specifications,
+      category: product.category,
+      brand: product.brand,
+      stock: product.stock,
+      price: product.price,
+      status: product.status,
+      color: product.color,
     });
-
-    return "updated";
+    return { id };
   } catch (error) {
     console.log(error);
   }
 }
+
 
 export async function deleteFromDoc(id: string, Collection: string) {
   try {
@@ -159,13 +168,3 @@ export async function getOrdersCustomer(customerId: string) {
 
 // Stripe functions //
 
-export async function clearCart(productId: string[]) {
-  try {
-    for (let i = 0; i < productId.length; i++) {
-      const cart = await deleteDoc(doc(db, "cart", productId[i]));
-      return cart;
-    }
-  } catch (error) {
-    console.log("Error happend Clear cart", error);
-  }
-}
